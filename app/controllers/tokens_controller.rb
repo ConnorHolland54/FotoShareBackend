@@ -1,18 +1,24 @@
+require 'json'
 class TokensController < ApplicationController
   def create
-    @user = User.find_by_email(user_params[:email])
+    @user = User.find_by_email(user_params["email"])
     if @user
-      render json: {
+      info = {
         token: JsonWebToken.encode(user_id: @user.id),
         email: @user.email
       }
+      response.headers['Access-Control-Allow-Origin']  = '*'
+      render json: info
     else
-      head :unauthorized
+      render json: {
+        "message": "Error"
+      }
     end
   end
 
   private
   def user_params
-    params.require(:user).permit(:email, :uid)
+    body = request.body.read
+    hash = JSON.parse(body)
   end
 end
