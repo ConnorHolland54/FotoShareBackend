@@ -10,7 +10,11 @@ class UsersController < ApplicationController
 
   # GET /users/1
   def show
-    render json: @user
+    if current_user
+      render json: UserSerializer.new(current_user).to_serialized_json
+    else
+      render json: "User does not exist!"
+    end
   end
 
   # POST /users

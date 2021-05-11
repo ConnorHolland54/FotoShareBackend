@@ -4,8 +4,11 @@ class PostsController < ApplicationController
   # GET /posts
   def index
     @posts = Post.all
+    options = {
+      include: [:user, :comments]
+    }
 
-    render json: @posts
+    render json: PostSerializer.new(@posts).to_serialized_json
   end
 
   # GET /posts/1
