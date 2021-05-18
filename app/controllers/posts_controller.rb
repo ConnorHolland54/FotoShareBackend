@@ -3,7 +3,7 @@ class PostsController < ApplicationController
 
   # GET /posts
   def index
-    @posts = Post.all
+    @posts = Post.all.order_by_most_recent
     options = {
       include: [:user, :comments]
     }
@@ -49,6 +49,6 @@ class PostsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def post_params
-      params.require(:post).permit(:image_url, :user_id)
+      params.require(:post).permit(:image_url, :user_id, :caption)
     end
 end
